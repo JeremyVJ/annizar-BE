@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Anizzar Catering</title>
+    <title>Annizar Catering</title>
 </head>
 <body>
     <h3>{{ $data['name'] }}</h3>

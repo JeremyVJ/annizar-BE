@@ -130,10 +130,10 @@ class PembelianController extends Controller
                 return redirect()->route('user.dashboard.index')->with('warning', 'No transactions found.');
             }
 
-            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVERKEY');
-            \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
-            \Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
-            \Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS');
+            // \Midtrans\Config::$serverKey = env('MIDTRANS_SERVERKEY');
+            // \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+            // \Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
+            // \Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS');
 
             $transactions = TransaksiTmp::join('barangs as b', 'transaksi_tmps.barang_id', '=', 'b.id')
                 ->where('transaksi_tmps.konsumen_id', Auth::user()->id)
@@ -176,14 +176,9 @@ class PembelianController extends Controller
                     'phone' => $konsumen->telepon,
                 ],
             ];
-
             // TODO
             // $snapToken = \Midtrans\Snap::getSnapToken($params);
             $snapToken = "Dummy";
-
-
-
-
 
             return view('pembelian.pembayaran', compact('transaksiPenyewaan', 'snapToken', 'ppn', 'totalAmount', 'ongkir', 'trans', 'konsumen'));
         } else {

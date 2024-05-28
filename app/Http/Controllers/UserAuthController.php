@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
+
 
 class UserAuthController extends Controller
 {
@@ -43,7 +46,6 @@ class UserAuthController extends Controller
 
         $user->otp = $otp;
         $user->otp_expired = $otpExpired;
-
         $user->save();
 
         $getUser = User::where("id", $user['id'])->first();
@@ -59,7 +61,7 @@ class UserAuthController extends Controller
 
         return response()->json([
             "status" => 1,
-            "message" => "Registrasi berhasil. Cek kode OTP pada E-mail terdaftar Anda"
+            "message" => "Registrasi berhasil. Cek kode OTP pada E-mail terdaftar Anda",
         ]);
         
     }
@@ -123,7 +125,8 @@ class UserAuthController extends Controller
 
                         return response()->json([
                             'status' => 1,
-                            'message' => 'Akun berhasil diaktivasi!'
+                            'message' => 'Akun berhasil diaktivasi!',
+                            'data' => $user
                         ]);
                     } else {
                         return response()->json([
@@ -164,7 +167,7 @@ class UserAuthController extends Controller
                     return response()->json([
                         'status' => 1,
                         'message' => 'Login Berhasil',
-                        'conntent' => $user
+                        'data' => $user
                     ]);
                 } else {
                     return response()->json([
@@ -172,12 +175,45 @@ class UserAuthController extends Controller
                         'message' => 'Akun belum aktif'
                     ], 503);
                 }
-            }else{
-                return response()->json([
-                    'status' => 0,
-                    'message' => 'Username atau Password Tidak Ditemukan!'
-                ], 404);
+                }else{
+                    return response()->json([
+                        'status' => 0,
+                        'message' => 'Username atau Password Tidak Ditemukan!'
+                    ], 404);
             }
         }
     }
+
+    // kode baru
+//     public function login(Request $request) {
+//         $request->validate([
+//             'email' => 'required|email',
+//             'password' => 'required'
+//         ]);
+
+//         if (Auth::attempt($request->only('email', 'password'))) {
+//             $user = Auth::user();
+
+//             if ($user->status == 1) {
+//                 $token = $user->createToken('authToken')->plainTextToken;
+
+//                 return response()->json([
+//                     'status' => 1,
+//                     'message' => 'Login Berhasil',
+//                     'token' => $token,
+//                     'user' => $user
+//                 ]);
+//             }
+
+//             return response()->json([
+//                 'status' => 0,
+//                 'message' => 'Akun belum aktif'
+//             ], 403);
+//         }
+
+//         return response()->json([
+//             'status' => 0,
+//             'message' => 'Username atau Password Tidak Ditemukan!'
+//         ], 404);
+//     }
 }

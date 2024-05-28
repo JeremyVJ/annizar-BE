@@ -10,7 +10,8 @@
         "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.2",
+        "laravel/passport": "^12.2",
+        "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "midtrans/midtrans-php": "^2.5",
         "spipu/html2pdf": "^5.2"
