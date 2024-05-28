@@ -62,6 +62,7 @@ Route::get('/dashboard', function () {
 Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function(){
     Route::get('/profile', [AdminDashboardController::class, 'profile'])->name('profile');
     Route::resource('dashboard', AdminDashboardController::class);
+    Route::get('admin/home', [AdminDashboardController::class, 'redirect']);
     Route::resource('tentang', TentangController::class);
     Route::resource('cara', CaraController::class);
     Route::resource('konsumen', KonsumenController::class);

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Transaksi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -15,8 +18,9 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function redirect()
     {
+
         $transaksi =    DB::table('transaksis')
                             ->select('status', DB::raw('COUNT(id) as jumlah'))
                             ->where('status', '=', 'Menunggu Pembayaran')
@@ -27,7 +31,18 @@ class DashboardController extends Controller
                             ->where('status_bayar', '=', 'Menunggu Verifikasi Pembayaran')
                             ->groupBy('status_bayar')
                             ->get();
-        return view('admin.dashboard',compact('transaksi','pembayaran'));
+
+        $total_barang = Barang::count();
+        $total_kategori = Kategori::count();
+        $total_user = User::count();
+        // $total_revenue=
+
+        // $transaksis = Transaksi::where('status')->get();
+        // foreach($transaksis as $transaksis)
+        // {
+        //     $total_revenue=$total_revenue + $transaksi->total_bayar;
+        // }
+        return view('admin.dashboard', compact('transaksi','pembayaran','total_kategori', 'total_barang', 'total_user'));
     }
 
      public function profile()
@@ -99,6 +114,12 @@ class DashboardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
+     public function index()
+{
+    return $this->redirect();
+}
+
     public function destroy(string $id)
     {
         //
